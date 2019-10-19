@@ -1,0 +1,89 @@
+<section class="kplugin-config BSTRP">
+  <section class="container">
+
+    <section class="row mb-2">
+      <h2 class="kplugin-config-heading" style="padding: 12px 0;">
+        <span>Settings for kplugin</span>
+        <i class="fa fa-question-circle" data-action="show-help"></i>
+      </h2>
+    </section>
+
+    <section class="row mb-2">
+      <div class="btn-group">
+        <button class="btn btn-primary" data-action="config-table-save">
+          <i class="fa fa-save"></i>
+          Save
+        </button>
+        <button class="btn btn-dark" data-action="config-table-add-row">
+          <i class="fa fa-plus"></i>
+          Add Row
+        </button>
+        <button class="btn btn-dark" data-action="config-table-upload">
+          <i class="fa fa-cloud-upload-alt"></i>
+          Upload
+        </button>
+        <button class="btn btn-dark" data-action="config-table-download">
+          <i class="fa fa-cloud-download-alt"></i>
+          Download
+        </button>
+      </div>
+    </section>
+
+    <section class="row mb-2">
+      <div id="config-table" style="width: 100%;">Loading Table Data...</div>
+    </section>
+
+    <br />
+
+    <section class="row">
+      <h3>Variables</h3>
+    </section>
+
+    <section class="row mb-2">
+      <p class="kintoneplugin-desc">
+        Using template engine of underscore.js. See below for specific usage.
+      </p>
+
+      <a
+         href="https://underscorejs.org/#template"
+         target="_new"
+         >https://underscorejs.org/#template</a>
+
+    </section>
+
+    <section class="row mb-2">
+      <div id="section-variable-description" class="gaia-admin-listtable-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th><span>var</span></th>
+              <th><span>type</span></th>
+              <th><span>desc.</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>last_increment</td>
+              <td>String</td>
+              <td>A first value of "ORDER BY DESC" result.</td>
+            </tr>
+            <tr>
+              <td>total</td>
+              <td>Integer</td>
+              <td>Total count of non-empty records.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div><!-- gaia-admin-listtable-table-wrapper -->
+    </section>
+
+  </section><!-- container -->
+
+</section>
+
+<script type="text/template" id="template:help">
+<!-- Remove this if you dont need -->
+<div class="text-left">
+  <p class="text-muted">This is a help.</p>
+</div>
+</script>
