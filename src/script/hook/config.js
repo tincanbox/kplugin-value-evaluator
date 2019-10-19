@@ -149,6 +149,7 @@
   function main(){
     init_config_table();
     K.ui.bind_action(A);
+    render_variable_description();
   }
 
   function validate(data){
@@ -203,10 +204,6 @@
     });
   }
 
-  function init(){
-    render_variable_description();
-  }
-
   function render_variable_description(){
     var div = $('#section-variable-description');
     var tbl = div.find('table');
@@ -217,8 +214,8 @@
     var stbl = $('<table>');
     var html = "";
 
-    for(var k in S.props){
-      var row = S.props[k];
+    for(var k in S.properties){
+      var row = S.properties[k];
       var str = $('<tr>');
       var tdk = $('<td>');
       var tdl = $('<td>');
