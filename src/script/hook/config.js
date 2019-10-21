@@ -21,10 +21,17 @@
         width:150, editor: 'select',
         editorParams: function(row){
           var vals = {};
-          var ks = Object.keys(S.properties).sort();
-          for(var k of ks){
+          var ks = Object.keys(S.properties);
+          var tg = ks.map(function(k){
             var p = S.properties[k];
-            vals[p.code] = p.label + " ["+p.type+"]"
+            return [k, p.code];
+          }).sort(function(a, b){
+            return a[1].toLowerCase() > b[1].toLowerCase() ? 1 : -1;
+          });
+          console.log(tg);
+          for(var t of tg){
+            var p = S.properties[t[0]];
+            vals[p.code] = p.code
           }
           return vals;
         },
@@ -207,30 +214,13 @@
   function render_variable_description(){
     var div = $('#section-variable-description');
     var tbl = div.find('table');
-    var tr = $('<tr>');
-    tr.append($('<td>record</td>'));
-    tr.append($('<td></td>'));
-    var cont = $('<td>');
-    var stbl = $('<table>');
-    var html = "";
 
-    for(var k in S.properties){
-      var row = S.properties[k];
-      var str = $('<tr>');
-      var tdk = $('<td>');
-      var tdl = $('<td>');
-      var tdt = $('<td>');
-      tdk.html(k);
-      tdl.html(row.label);
-      tdt.html(row.type);
-      str.append(tdk);
-      str.append(tdl);
-      str.append(tdt);
-      stbl.append(str);
-    }
-    cont.append(stbl);
-    tr.append(cont);
-    tbl.find('tbody').append(tr);
+    var tbl_r = K.ui.render('reference_table', {
+      props: S.properties
+    });
+
+
+    tbl.find('#td-record-reference').append(tbl_r);
   }
 
   function recognize_field(){

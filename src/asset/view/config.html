@@ -52,9 +52,9 @@
     </section>
 
     <section class="row mb-2">
-      <div id="section-variable-description" class="gaia-admin-listtable-table-wrapper">
-        <table>
-          <thead>
+      <div id="section-variable-description" class="table-responsive">
+        <table class="table">
+          <thead class="thead-dark">
             <tr>
               <th><span>var</span></th>
               <th><span>type</span></th>
@@ -65,12 +65,19 @@
             <tr>
               <td>last_increment</td>
               <td>String</td>
-              <td>A first value of "ORDER BY DESC" result.</td>
+              <td>A first value of "ORDER BY DESC" result of "Target" field.</td>
             </tr>
             <tr>
               <td>total</td>
               <td>Integer</td>
-              <td>Total count of non-empty records.</td>
+              <td>Total count of non-empty records with "Target" field.</td>
+            </tr>
+            <tr>
+              <td>record</td>
+              <td>*vary</td>
+              <td id="td-record-reference">
+                <p>Available properties on `create` and `edit` events.</p>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -84,6 +91,46 @@
 <script type="text/template" id="template:help">
 <!-- Remove this if you dont need -->
 <div class="text-left">
-  <p class="text-muted">This is a help.</p>
+<p class="text-muted">フィールド自動計算プラグイン</p>
+<p>
+<small>
+指定したフィールドを自動計算に変更します。適用タイミングは <code>create</code> と <code>edit</code> です。
+自動計算で使用される Value フィールドは UnderscoreJS の <code>_.template</code> メソッドでレンダリングするための式を入力してください。
+</small>
+</p>
+<p>
+<small>
+例えば、<code>&lt;%= record.OtherField.value + 2 %&gt;</code> と入力した場合は OtherField に 2 を加算した値が保存時に入力されます。
+</small>
+<br>
+<small>
+使用可能なレコードのフィールドコードは、テーブル下部のリファレンスを確認してください。
+</small>
+</p>
+<p>
+<div><span class="font-weight-bold">参考</span><div>
+<a href="https://underscorejs.org/#template"><small>https://underscorejs.org/#template</small></a>
+</p>
 </div>
+</script>
+
+<script type="text/template" id="template:reference_table">
+<table id="reference-table" class="table table-striped">
+<thead class="thead-dark">
+  <tr>
+    <th>Field Code</th>
+    <th>Label</th>
+    <th>Type</th>
+  </tr>
+</thead>
+<tbody>
+  <% for(var k in props){ var r = props[k] %>
+    <tr>
+      <td><%= r.code %></td>
+      <td><%= r.label %></td>
+      <td><%= r.type %></td>
+    </tr>
+  <% } %>
+</tbody>
+</table>
 </script>

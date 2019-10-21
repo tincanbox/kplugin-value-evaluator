@@ -151,7 +151,7 @@
   }
 
   function each_config_target(clb){
-    for(var a of config.json.table){
+    for(var a of config.json.table || []){
       clb(a);
     }
   }
