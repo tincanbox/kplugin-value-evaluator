@@ -26,6 +26,12 @@
     return e;
   });
 
+  K.$k.events.on('app.record.edit.show', function(e){
+    event_disable_target_field(e);
+    return e;
+  });
+
+
   K.$k.events.on('app.record.create.submit', function(e){
     return event_on_save(e, 'create');
   });
@@ -34,43 +40,59 @@
     return event_on_save(e, 'edit');
   });
 
-  K.$k.events.on('app.record.edit.show', function(e){
-    event_disable_target_field(e);
-    return e;
-  });
+  K.api.fetch('app/form/fields')
+    .then(function(p){
+      for(var k in p.properties){
+        K.$k.events.on('app.record.edit.change.' + k, function(e){
+          update_all_field(e.record, 'change');
+          return e;
+        });
+      }
+    });
 
   function event_block_new_entry(e){
     each_config_target(function(a){
-      e.record[a.target].value = "AUTOCALC";
+      if(e.record[a.target]){
+        e.record[a.target].value = e.record[a.target].value || "AUTOCALC";
+      }else{
+        console.log("not found", a.target);
+      }
     });
   }
 
   function event_disable_target_field(e){
     each_config_target(function(a){
-      e.record[a.target].disabled = true;
+      if(e.record[a.target]){
+        e.record[a.target].disabled = true;
+      }else{
+        console.log("not found", a.target);
+      }
     });
   }
 
   function event_on_save(e, timing){
     return new kintone.Promise(function(res, rej){
       retrieve_field_meta().then(function(){
-        update_all_field(e, timing);
+        update_all_field(e.record, timing);
         res(e);
       });
     });
   }
 
-  function update_all_field(e, timing){
+  function update_all_field(rec, timing){
+    var r = rec;
     each_config_target(function(a){
       if(a.timing == 'all' || a.timing == timing){
-        var record = e.record;
+        var t = r[a.target];
+        if(!t){
+          return;
+        }
         var param = FM.ob.merge({}, a.param);
-        param.record = record;
+        param.record = r;
         param.generate = _helper_generate;
-        e.record[a.target].value = _.template(a.value)(param).trim();
+        t.value = _.template(a.value)(param).trim();
       }
     });
-    return e;
   }
 
 
@@ -90,6 +112,8 @@
       each_config_target(function(a){
         var p = fetch_matched_record(a).then(function(param){
           a.param = param;
+        }).catch(function(e){
+          console.log("ERROR", e);
         });
         ps.push(p);
       });
@@ -104,6 +128,10 @@
    */
   function fetch_matched_record(a){
     let proc = new Promise((resolve, reject) =>{
+      var opt = {
+        last_increment: 0,
+        total: 0
+      };
       kintone.api(kintone.api.url('/k/v1/records', true), 'GET', {
         "app": kintone.app.getId(),
         "query": a.target + " != \"\" order by " + a.target + " desc",
@@ -113,10 +141,8 @@
         var record = e.records[0];
         var li = (record && record[a.target]) ? record[a.target].value : "";
         var tt = e.totalCount ? parseInt(e.totalCount) : 0;
-        var opt = {
-          last_increment: li,
-          total: tt
-        };
+        opt.last_increment = li;
+        opt.total = tt;
         resolve(opt);
       }, function(error) {
         reject("something wrong has happened!!");
