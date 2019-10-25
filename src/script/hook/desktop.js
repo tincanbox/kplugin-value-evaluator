@@ -44,7 +44,7 @@
     .then(function(p){
       for(var k in p.properties){
         K.$k.events.on('app.record.edit.change.' + k, function(e){
-          update_all_field(e.record, 'change');
+          e = update_all_field(e, 'change');
           return e;
         });
       }
@@ -73,26 +73,38 @@
   function event_on_save(e, timing){
     return new kintone.Promise(function(res, rej){
       retrieve_field_meta().then(function(){
-        update_all_field(e.record, timing);
+        e = update_all_field(e, timing);
         res(e);
       });
     });
   }
 
-  function update_all_field(rec, timing){
+  function update_all_field(e, timing){
+    var rec = e.record;
     var r = rec;
     each_config_target(function(a){
       if(a.timing == 'all' || a.timing == timing){
         var t = r[a.target];
         if(!t){
-          return;
+          return e;
         }
         var param = FM.ob.merge({}, a.param);
         param.record = r;
         param.generate = _helper_generate;
-        t.value = _.template(a.value)(param).trim();
+        try{
+          t.value = _.template(a.value)(param).trim();
+        }catch(exc){
+          var msg = "自動計算に失敗しました: " + exc.message;
+          K.dialog({
+            title: "Error",
+            text: msg
+          });
+          t.error = msg;
+        }
       }
     });
+
+    return e;
   }
 
 
