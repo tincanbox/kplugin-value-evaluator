@@ -43,7 +43,11 @@
   K.api.fetch('app/form/fields')
     .then(function(p){
       for(var k in p.properties){
-        K.$k.events.on('app.record.edit.change.' + k, function(e){
+        K.$k.events.on([
+          'app.record.create.change.' + k,
+          'app.record.edit.change.' + k,
+          'app.record.index.change.' + k,
+        ], function(e){
           e = update_all_field(e, 'change');
           return e;
         });
