@@ -8,9 +8,13 @@
   var K = p;
   var $ = K.$;
 
-  K.init().then(main);
+  var config = K.config.fetch();
 
-  function main(){
-  }
+  var ready = K.init().then(main);
+
+  /* Entry points.
+   */
+
+   kplugin_value_evaluator_init(K, $, config, ready);
 
 });

@@ -46,6 +46,7 @@
       "vendor/kluginn/req/sweetalert2/sweetalert2.all.min.js",
       "vendor/kluginn/req/underscore/underscore-min.js",
       "vendor/kluginn/dist/kluginn.js",
+      ".build/init.js",
       ".build/desktop.js"
     ],
     "css": [
@@ -64,6 +65,7 @@
       "vendor/kluginn/req/sweetalert2/sweetalert2.all.min.js",
       "vendor/kluginn/req/underscore/underscore-min.js",
       "vendor/kluginn/dist/kluginn.js",
+      ".build/init.js",
       ".build/mobile.js"
     ]
   }
