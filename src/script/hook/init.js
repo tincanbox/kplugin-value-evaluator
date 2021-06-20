@@ -1,4 +1,4 @@
-function kplugin_value_evaluator_init(K, $, config, ready){
+export function kplugin_value_evaluator_init(K, $, config){
   K.$k.events.on('app.record.create.show', function(e){
     event_disable_target_field(e);
     event_block_new_entry(e);
@@ -181,6 +181,5 @@ function kplugin_value_evaluator_init(K, $, config, ready){
       clb(a);
     }
   }
-
 
 }

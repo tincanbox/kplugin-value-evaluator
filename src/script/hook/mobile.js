@@ -1,3 +1,5 @@
+import { kplugin_value_evaluator_init } from './init.js';
+
 (function(k, factory) {
   'use strict';
 
@@ -10,11 +12,8 @@
 
   var config = K.config.fetch();
 
-  var ready = K.init().then(main);
-
-  /* Entry points.
-   */
-
-   kplugin_value_evaluator_init(K, $, config, ready);
+  K.init().then(function () {
+    kplugin_value_evaluator_init(K, $, config);
+  });
 
 });
