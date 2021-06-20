@@ -9,6 +9,7 @@ const enabledSourceMap = MODE === "development";
 module.exports = {
   mode: MODE,
   entry: {
+    init: './src/script/hook/init.js',
     desktop: './src/script/hook/desktop.js',
     config: './src/script/hook/config.js',
     mobile: './src/script/hook/mobile.js',
